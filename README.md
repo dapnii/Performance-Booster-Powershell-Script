@@ -1,6 +1,6 @@
 # Performance-Booster-Powershell-Script
 
-Script is meant to optimize system on Windows machines.
+Script is meant to optimize performance on Windows machines.
 
 In order to run all one has to do is right click and choose Run with Powershell.
 
