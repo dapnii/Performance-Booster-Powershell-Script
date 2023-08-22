@@ -6,7 +6,10 @@ In order to run all one has to do is right click and choose Run with Powershell.
 
 Script does things like:
 
-- Clears temporary files (%temp%, temp, prefetch)
-- Checks if high performance mode is enabled and if not enables it
-- Disables background apps
-- Clears Firefox and Chrome cache
+- Clears Temporary Files (%temp%, temp, prefetch)
+- Checks If High Performance Mode Is Enabled And If Not Enables It
+- Disables Background Apps
+- Clears Firefox And Chrome cache
+- Disables Start Menu Suggestions
+- Disables Automatic Installation Of Suggested Apps
+- Adjusts System Visual Settings For Best Performance
