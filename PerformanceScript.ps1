@@ -6,16 +6,17 @@ if (-not $isAdmin) {
 
 
 
+
 #----###########ALL VARIABLES#############----#
 
 $ErrorActionPreference = 'silentlycontinue'
 $UserTempPath = [System.IO.Path]::Combine($env:TEMP, '*.*')
-$TempPaths = @($UserTempPath, "C:\Windows\Temp", "C:\Windows\Prefetch")
+$TempPaths = "C:\Users\*\AppData\Local\Temp", "C:\Windows\Temp", "C:\Windows\Prefetch"
 $BackgroundApps = Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications 
 $GlobalUserDisabled = (Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications).GlobalUserDisabled
 $GetPowerPlan = powercfg /GetActiveScheme 2>$null
 $FirefoxVersions = @("*.default-esr", "*.default-release")
-$ChromeCache = "C:\Users\$env:USERNAME\AppData\Local\Google\Chrome\User Data\Default\Cache"
+$ChromeCache = "C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\Cache"
 $VisualEffectsArray = "AnimateMinMax", "ComboBoxAnimation", "ControlAnimations", "CursorShadow", "DropShadow", "ListBoxSmoothScrolling", "ListviewAlphaSelect", "ListviewShadow", "MenuAnimation", "SelectionFade", "TaskbarAnimations", "DWMAeroPeekEnabled", "DWMEnabled", "DWMSaveThumbnailEnabled", "Themes", "ThumbnailsOrIcon", "TooltipAnimation"
 
 
@@ -44,8 +45,8 @@ if ($GlobalUserDisabled -eq 0 -or $null -eq $GlobalUserDisabled) {
 }
 
 foreach ($Version in $FirefoxVersions) {
-    if (Test-Path C:\Users\$env:USERNAME\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2) {
-        Remove-Item C:\Users\$env:USERNAME\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2 -Recurse
+    if (Test-Path C:\Users\*\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2) {
+        Remove-Item C:\Users\*\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2 -Recurse
         Write-Host "Firefox cache cleared..."
         break
     } else {
