@@ -12,8 +12,8 @@ if (-not $isAdmin) {
 $ErrorActionPreference = 'silentlycontinue'
 $UserTempPath = [System.IO.Path]::Combine($env:TEMP, '*.*')
 $TempPaths = "C:\Users\*\AppData\Local\Temp", "C:\Windows\Temp", "C:\Windows\Prefetch"
-$BackgroundApps = Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications 
-$GlobalUserDisabled = (Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications).GlobalUserDisabled
+$BackgroundApps = Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications >$null
+$GlobalUserDisabled = (Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications).GlobalUserDisabled >$null
 $GetPowerPlan = powercfg /GetActiveScheme 2>$null
 $FirefoxVersions = @("*.default-esr", "*.default-release")
 $ChromeCache = "C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\Cache"
@@ -24,11 +24,15 @@ $VisualEffectsArray = "AnimateMinMax", "ComboBoxAnimation", "ControlAnimations",
 #------##############CODE################------#
 
 
+# Clears temporary files in %temp%, temp, prefetch folders#
+
 foreach ($Path in $TempPaths) {
     Get-ChildItem -Path $Path *.* -Recurse | Remove-Item -Force -Recurse
     Write-Host "Files from $Path have been deleted..."
 }
 
+
+# Checks if high performance mode is enabled and if not enables it#
 if ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)") {
     Write-Host "High performance mode was already enabled..."
 }
@@ -37,6 +41,8 @@ if ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  
     Write-Host "High performance mode has been enabled..."
 }
 
+
+# Check if background apps are disabled and disables them if not true #
 if ($GlobalUserDisabled -eq 0 -or $null -eq $GlobalUserDisabled) {
     $BackgroundApps | New-ItemProperty -Name 'GlobalUserDisabled' -Value 1
     Write-Host "Background apps have been disabled..." 
@@ -44,6 +50,8 @@ if ($GlobalUserDisabled -eq 0 -or $null -eq $GlobalUserDisabled) {
     Write-Host "Background apps are already disabled..."
 }
 
+
+# Checks what version of firefox user has and clear proper cache folder #
 foreach ($Version in $FirefoxVersions) {
     if (Test-Path C:\Users\*\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2) {
         Remove-Item C:\Users\*\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2 -Recurse
@@ -55,6 +63,8 @@ foreach ($Version in $FirefoxVersions) {
     }
 }
 
+
+# Clears Google Chrome cache #
 if (Test-Path $ChromeCache) {
     Remove-Item $ChromeCache -Recurse
     Write-Host "Google Chrome cache cleared..."
@@ -62,13 +72,19 @@ if (Test-Path $ChromeCache) {
     Write-Host "Google Chrome cache folder could not be find..."
 }
 
+
+
+# Disables start menu suggestions #
 Write-Host "Disabling Start Menu Suggestions..."
 Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager | Set-ItemProperty -Name SystemPaneSuggestionsEnabled -Value 0
 
+
+# Disables automatic installation of suggested apps #
 Write-Host "Disabling Automatically Installing Suggested Apps..."
 Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager | Set-ItemProperty -Name SilentInstalledAppsEnabled -Value 0
 
 
+#Adjusts visual settings for best performance and look at the same time #
 Write-Host "Applying Custom Performance settings..."
 Reg Add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
 
