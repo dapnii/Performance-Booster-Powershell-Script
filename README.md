@@ -20,27 +20,17 @@ Script does things like:
 
 
 
-
-
-
-
 BENCHMARK TEST
 
-![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/eb541a50-002d-4497-926c-549c8a336874)
-
-
-
-
-Before:
-
-![1](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/9e10b34f-0974-4359-868b-c101065a2b40)
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/a7cede26-2158-41b1-9a4e-e09ec9e8aa63)
 
 
 
 
 
-AFTER:
 
-![2](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/a2dde392-bb96-44a5-946f-f7af5b35fe0d)
+
+
+
 
 
