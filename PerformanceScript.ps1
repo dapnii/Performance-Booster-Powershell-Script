@@ -74,13 +74,12 @@ if (Test-Path $ChromeCache) {
 }
 
 
-# Disables DiagTrack Service #
-Write-Host "Disabling Diagnostic Data Tracking Service..."
-Set-Service -Name DiagTrack -StartupType Disabled; Stop-Service -Name DiagTrack
-
-# Disables Offline Files #
-Write-Host "Disabling Offline Files..."
-Set-Service -Name CscService -StartupType Disabled; Stop-Service -Name CscService
+#Disables Unnecessary Services #
+$ServicesArray = "DiagTrack", "CscService"
+foreach ($Service in $ServicesArray) {
+    Write-Host "Disabling $Service Service..."
+    Set-Service -Name $Service -StartupType Disabled; Stop-Service -Name $Service
+}
 
 
 # Loop designed to loop through each user in HKEY_USERS and do specified things below #
