@@ -26,6 +26,10 @@ Script does things like:
 
 BENCHMARK TEST
 
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/eb541a50-002d-4497-926c-549c8a336874)
+
+
+
 
 Before:
 
