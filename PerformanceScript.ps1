@@ -82,6 +82,11 @@ Write-Host "Disabling Automatically Installing Suggested Apps..."
 Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager | Set-ItemProperty -Name SilentInstalledAppsEnabled -Value 0
 
 
+# Disables DiagTrack Service
+Write-Host "Disabling Diagnostic Data Tracking Service..."
+Set-Service -Name DiagTrack -StartupType Disabled; Stop-Service -Name DiagTrack
+
+
 #Adjusts visual settings for best performance and look at the same time #
 $VisualEffectsArray = "AnimateMinMax", "ComboBoxAnimation", "ControlAnimations", "CursorShadow", "ListBoxSmoothScrolling", "ListviewAlphaSelect", "ListviewShadow", "MenuAnimation", "TaskbarAnimations", "DWMAeroPeekEnabled", "DWMEnabled", "DWMSaveThumbnailEnabled", "Themes", "TooltipAnimation"
 Write-Host "Applying Custom Performance settings..."
