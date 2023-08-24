@@ -14,7 +14,7 @@ if (-not $isAdmin) {
 
 # Errors are not outputed #
 $ErrorActionPreference = 'silentlycontinue'
-
+New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
 
 # Clears temporary files in %temp%, temp, prefetch folders #
 $TempPaths = "C:\Users\*\AppData\Local\Temp", "C:\Windows\Temp", "C:\Windows\Prefetch"
@@ -37,7 +37,7 @@ if ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  
 
 # Check if background apps are disabled and disables them if not true #
 Write-Host "Disabling background apps..."
-New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
+
 $baseKeyPath = "HKU:\"
 $subKeys = Get-ChildItem -Path $baseKeyPath
 foreach ($subKey in $subKeys) {
