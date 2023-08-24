@@ -104,6 +104,7 @@ foreach ($profile in $userProfiles) {
     Write-Host "Disabling Start Menu Suggestions..."
     reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f | Out-Null
 
+# System Properties --> Advanced --> Performance Settings --> Custom Settings for best performance and look #
     foreach ($Option in $VisualEffectsArray) {
         Write-Host "Disabling $Option ..."
         reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\$Option" /v DefaultApplied /t REG_DWORD /d 0 /f | Out-Null
