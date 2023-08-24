@@ -29,12 +29,14 @@ BENCHMARK TEST
 
 Before:
 
-![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/6cbbdac9-a640-4400-87cb-190b3dffcd14)
+![1](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/9e10b34f-0974-4359-868b-c101065a2b40)
+
 
 
 
 
 AFTER:
 
-![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/ab9e0bfa-2f12-4028-b5f1-ba8a43d6a6e4)
+![2](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/a2dde392-bb96-44a5-946f-f7af5b35fe0d)
+
 
