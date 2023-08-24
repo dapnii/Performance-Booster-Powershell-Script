@@ -74,42 +74,43 @@ if (Test-Path $ChromeCache) {
 }
 
 
-# Disables start menu suggestions #
-Write-Host "Disabling Start Menu Suggestions..."
-Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager | Set-ItemProperty -Name SystemPaneSuggestionsEnabled -Value 0
-
-
-# Disables automatic installation of suggested apps #
-Write-Host "Disabling Automatically Installing Suggested Apps..."
-Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager | Set-ItemProperty -Name SilentInstalledAppsEnabled -Value 0
-
-
 # Disables DiagTrack Service
 Write-Host "Disabling Diagnostic Data Tracking Service..."
 Set-Service -Name DiagTrack -StartupType Disabled; Stop-Service -Name DiagTrack
 
 
-#Adjusts visual settings for best performance and look at the same time #
+# Loop designed to loop through each user in HKEY_USERS and do specified things below #
 $VisualEffectsArray = "AnimateMinMax", "ComboBoxAnimation", "ControlAnimations", "CursorShadow", "ListBoxSmoothScrolling", "ListviewAlphaSelect", "ListviewShadow", "MenuAnimation", "TaskbarAnimations", "DWMAeroPeekEnabled", "DWMEnabled", "DWMSaveThumbnailEnabled", "Themes", "TooltipAnimation"
-Write-Host "Applying Custom Performance settings..."
 $userProfiles = Get-ChildItem -Path "Registry::HKEY_USERS"
 foreach ($profile in $userProfiles) {
+
     $profileSID = $profile.PSChildName
+
     Write-Host "Enabling Custom Performance Settings for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
+
     Write-Host "Customizing Prefrence Mask Settings for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f | Out-Null
+
     Write-Host "Disabling Windows Metrics for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f | Out-Null
+
     Write-Host "Disabling Transparency Effects for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f | Out-Null
-}
 
-foreach ($Option in $VisualEffectsArray) {
-    Reg Add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\$Option /v DefaultApplied /t REG_DWORD /d 0 /f | Out-Null
-    Write-Host "Disabling $Option ..."
+    Write-Host "Disabling Automatically Installing Suggested Apps..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f | Out-Null
+
+    Write-Host "Disabling Start Menu Suggestions..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f | Out-Null
+
+    foreach ($Option in $VisualEffectsArray) {
+        Write-Host "Disabling $Option ..."
+        reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\$Option" /v DefaultApplied /t REG_DWORD /d 0 /f | Out-Null
+    }
 }
 
 Restart-Service -Name Themes
+
 
 Read-Host -Prompt "PRESS ENTER TO EXIT..."
