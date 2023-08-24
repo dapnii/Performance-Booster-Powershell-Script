@@ -30,4 +30,5 @@ Before:
 
 
 AFTER:
-![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/190a9439-088a-4ac0-9718-3835a0cf7c49)
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/ab9e0bfa-2f12-4028-b5f1-ba8a43d6a6e4)
+
