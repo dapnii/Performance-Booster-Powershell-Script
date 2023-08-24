@@ -1,5 +1,5 @@
 # Window Size #
-[console]::WindowWidth=100
+[console]::WindowWidth=85
 [console]::WindowHeight=30
 [console]::BufferWidth = [console]::WindowWidth
 
