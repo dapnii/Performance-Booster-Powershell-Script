@@ -15,7 +15,14 @@ if (-not $isAdmin) {
 $ErrorActionPreference = 'silentlycontinue'
 
 # Saves HKEY_USERS under HKU:
-New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
+if (Test-Path 'HKU:') {
+    Write-Host "HKU: Path Already Exists..."
+    break
+} else {
+    Write-Host "Saving HKEY_USERS Under HKU: Path..."
+    New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
+}
+
 
 # Clears temporary files in %temp%, temp, prefetch folders #
 $TempPaths = "C:\Users\*\AppData\Local\Temp", "C:\Windows\Temp", "C:\Windows\Prefetch"
