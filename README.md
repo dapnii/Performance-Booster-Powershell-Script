@@ -13,4 +13,5 @@ Script does things like:
 - Disables Start Menu Suggestions
 - Disables Automatic Installation Of Suggested Apps
 - Disables Transparency Effects
+- Disables Services (Diagnostics Tracking)
 - Adjusts System Visual Settings For Best Performance
