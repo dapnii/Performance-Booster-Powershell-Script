@@ -12,5 +12,7 @@ Script does things like:
 - Clears Firefox And Chrome cache
 - Disables Start Menu Suggestions
 - Disables Automatic Installation Of Suggested Apps
+- Disables News And Interests On The Taskbar
+- Disables Storing And Uploading User's Activity To Microsoft
 - Disables Services (Diagnostics Tracking, Offline Files)
 - Adjusts System Visual Settings For Best Performance
