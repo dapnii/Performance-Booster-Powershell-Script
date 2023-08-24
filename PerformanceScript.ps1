@@ -15,10 +15,7 @@ if (-not $isAdmin) {
 $ErrorActionPreference = 'silentlycontinue'
 
 # Saves HKEY_USERS under HKU:
-if (Test-Path 'HKU:') {
-    Write-Host "HKU: Path Already Exists..."
-    break
-} else {
+if (-Not (Test-Path 'HKU:')) {
     Write-Host "Saving HKEY_USERS Under HKU: Path..."
     New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
 }
@@ -34,10 +31,7 @@ foreach ($Path in $TempPaths) {
 
 # Checks if high performance mode is enabled and if not enables it #
 $GetPowerPlan = powercfg /GetActiveScheme 2>$null
-if ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)") {
-    Write-Host "High performance mode was already enabled..."
-}
- else {
+if (-Not ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)")) {
     powercfg /s SCHEME_MIN
     Write-Host "Enabling High Performance Mode..."
 }
