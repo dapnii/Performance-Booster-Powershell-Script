@@ -2,7 +2,7 @@
 
 Script is meant to optimize performance on Windows machines.
 
-In order to run all one has to do is right click and choose Run with Powershell.
+In order to run all one has to do is right click and choose Run with Powershell (REQUIRES ELEVATED ACCESS).
 
 Script does things like:
 
