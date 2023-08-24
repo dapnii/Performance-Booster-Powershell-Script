@@ -23,4 +23,11 @@ Script does things like:
 BENCHMARK TEST
 
 
-BEFORE:                                                       AFTER: ![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/190a9439-088a-4ac0-9718-3835a0cf7c49)
+Before:
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/6cbbdac9-a640-4400-87cb-190b3dffcd14)
+
+
+
+
+AFTER:
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/190a9439-088a-4ac0-9718-3835a0cf7c49)
