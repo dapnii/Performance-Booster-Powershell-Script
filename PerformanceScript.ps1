@@ -1,3 +1,9 @@
+# Window Size #
+[console]::WindowWidth=70
+[console]::WindowHeight=30
+
+# Checks if script is ran as admin #
+
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) {
     Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
@@ -5,73 +11,64 @@ if (-not $isAdmin) {
 }
 
 
-
-
-#----###########ALL VARIABLES#############----#
-
+# Errors are not outputed #
 $ErrorActionPreference = 'silentlycontinue'
-$UserTempPath = [System.IO.Path]::Combine($env:TEMP, '*.*')
+
+
+# Clears temporary files in %temp%, temp, prefetch folders #
 $TempPaths = "C:\Users\*\AppData\Local\Temp", "C:\Windows\Temp", "C:\Windows\Prefetch"
-$BackgroundApps = Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications >$null
-$GlobalUserDisabled = (Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications).GlobalUserDisabled >$null
-$GetPowerPlan = powercfg /GetActiveScheme 2>$null
-$FirefoxVersions = @("*.default-esr", "*.default-release")
-$ChromeCache = "C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\Cache"
-$VisualEffectsArray = "AnimateMinMax", "ComboBoxAnimation", "ControlAnimations", "CursorShadow", "DropShadow", "ListBoxSmoothScrolling", "ListviewAlphaSelect", "ListviewShadow", "MenuAnimation", "SelectionFade", "TaskbarAnimations", "DWMAeroPeekEnabled", "DWMEnabled", "DWMSaveThumbnailEnabled", "Themes", "ThumbnailsOrIcon", "TooltipAnimation"
-
-
-
-#------##############CODE################------#
-
-
-# Clears temporary files in %temp%, temp, prefetch folders#
-
 foreach ($Path in $TempPaths) {
     Get-ChildItem -Path $Path *.* -Recurse | Remove-Item -Force -Recurse
-    Write-Host "Files from $Path have been deleted..."
+    Write-Host "Deleting Files From $Path..."
 }
 
 
-# Checks if high performance mode is enabled and if not enables it#
+# Checks if high performance mode is enabled and if not enables it #
+$GetPowerPlan = powercfg /GetActiveScheme 2>$null
 if ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)") {
     Write-Host "High performance mode was already enabled..."
 }
  else {
     powercfg /s SCHEME_MIN
-    Write-Host "High performance mode has been enabled..."
+    Write-Host "Enabling High Performance Mode..."
 }
 
 
 # Check if background apps are disabled and disables them if not true #
-if ($GlobalUserDisabled -eq 0 -or $null -eq $GlobalUserDisabled) {
-    $BackgroundApps | New-ItemProperty -Name 'GlobalUserDisabled' -Value 1
-    Write-Host "Background apps have been disabled..." 
-} else {
-    Write-Host "Background apps are already disabled..."
+Write-Host "Disabling background apps..."
+New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
+$baseKeyPath = "HKU:\"
+$subKeys = Get-ChildItem -Path $baseKeyPath
+foreach ($subKey in $subKeys) {
+    $registryPath = Join-Path -Path $subKey.PSPath -ChildPath "Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications"
+    if (Test-Path -Path $registryPath) {
+        Set-ItemProperty -Path $registryPath -Name "GlobalUserDisabled" -Value 1
+    }
 }
 
 
 # Checks what version of firefox user has and clear proper cache folder #
+$FirefoxVersions = @("*.default-esr", "*.default-release")
 foreach ($Version in $FirefoxVersions) {
     if (Test-Path C:\Users\*\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2) {
         Remove-Item C:\Users\*\AppData\Local\Mozilla\Firefox\Profiles\$Version\cache2 -Recurse
-        Write-Host "Firefox cache cleared..."
+        Write-Host "Clearing Firefox Cache..."
         break
     } else {
-        Write-Host "Firefox cache folder could not be find..."
+        Write-Host "Firefox Cache Folder Could Not Be Find..."
         break
     }
 }
 
 
 # Clears Google Chrome cache #
+$ChromeCache = "C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\Cache"
 if (Test-Path $ChromeCache) {
     Remove-Item $ChromeCache -Recurse
-    Write-Host "Google Chrome cache cleared..."
+    Write-Host "Clearing Google Chrome Cache..."
 } else {
-    Write-Host "Google Chrome cache folder could not be find..."
+    Write-Host "Google Chrome Cache Folder Could Not Be Find..."
 }
-
 
 
 # Disables start menu suggestions #
@@ -85,18 +82,21 @@ Get-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager 
 
 
 #Adjusts visual settings for best performance and look at the same time #
+$VisualEffectsArray = "AnimateMinMax", "ComboBoxAnimation", "ControlAnimations", "CursorShadow", "ListBoxSmoothScrolling", "ListviewAlphaSelect", "ListviewShadow", "MenuAnimation", "TaskbarAnimations", "DWMAeroPeekEnabled", "DWMEnabled", "DWMSaveThumbnailEnabled", "Themes", "TooltipAnimation"
 Write-Host "Applying Custom Performance settings..."
-Reg Add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
-
-REG ADD "HKCU\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f | Out-Null
-REG ADD "HKCU\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f | Out-Null
+$userProfiles = Get-ChildItem -Path "Registry::HKEY_USERS"
+foreach ($profile in $userProfiles) {
+    $profileSID = $profile.PSChildName
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
+    reg add "HKEY_USERS\$profileSID\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f | Out-Null
+    reg add "HKEY_USERS\$profileSID\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f | Out-Null
+}
 
 foreach ($Option in $VisualEffectsArray) {
     Reg Add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\$Option /v DefaultApplied /t REG_DWORD /d 0 /f | Out-Null
-    Write-Host "Disabling $Option"
+    Write-Host "Disabling $Option ..."
 }
 
 Restart-Service -Name Themes
 
 Read-Host -Prompt "PRESS ENTER TO EXIT..."
-
