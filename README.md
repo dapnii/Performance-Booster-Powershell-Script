@@ -24,11 +24,13 @@ BENCHMARK TEST
 
 
 Before:
+
 ![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/6cbbdac9-a640-4400-87cb-190b3dffcd14)
 
 
 
 
 AFTER:
+
 ![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/ab9e0bfa-2f12-4028-b5f1-ba8a43d6a6e4)
 
