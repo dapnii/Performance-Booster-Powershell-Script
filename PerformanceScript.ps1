@@ -74,9 +74,13 @@ if (Test-Path $ChromeCache) {
 }
 
 
-# Disables DiagTrack Service
+# Disables DiagTrack Service #
 Write-Host "Disabling Diagnostic Data Tracking Service..."
 Set-Service -Name DiagTrack -StartupType Disabled; Stop-Service -Name DiagTrack
+
+# Disables Offline Files #
+Write-Host "Disabling Offline Files..."
+Set-Service -Name CscService -StartupType Disabled; Stop-Service -Name CscService
 
 
 # Loop designed to loop through each user in HKEY_USERS and do specified things below #
