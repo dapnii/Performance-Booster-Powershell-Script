@@ -14,6 +14,8 @@ if (-not $isAdmin) {
 
 # Errors are not outputed #
 $ErrorActionPreference = 'silentlycontinue'
+
+# Saves HKEY_USERS under HKU:
 New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
 
 # Clears temporary files in %temp%, temp, prefetch folders #
