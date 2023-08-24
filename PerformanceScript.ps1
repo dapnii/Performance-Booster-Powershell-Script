@@ -101,11 +101,14 @@ foreach ($profile in $userProfiles) {
     Write-Host "Disabling Transparency Effects for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f | Out-Null
 
-    Write-Host "Disabling Automatically Installing Suggested Apps..."
+    Write-Host "Disabling Automatically Installing Suggested Apps for HKEY_USERS\$profileSID..."
     reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f | Out-Null
 
-    Write-Host "Disabling Start Menu Suggestions..."
+    Write-Host "Disabling Start Menu Suggestions for HKEY_USERS\$profileSID..."
     reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f | Out-Null
+
+    Write-Host "Disabling Taskbar News And Interests for HKEY_USERS\$profileSID..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Feeds" /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f | Out-Null
 
 # System Properties --> Advanced --> Performance Settings --> Custom Settings for best performance and look #
     foreach ($Option in $VisualEffectsArray) {
@@ -115,6 +118,12 @@ foreach ($profile in $userProfiles) {
 }
 
 Restart-Service -Name Themes
+
+
+# All modifications in HKLM #
+Write-Host "Disabling Storing And Uploading User Activities To Microsoft... "
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f | Out-Null
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f | Out-Null
 
 
 Read-Host -Prompt "PRESS ENTER TO EXIT..."
