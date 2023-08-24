@@ -1,6 +1,7 @@
 # Window Size #
-[console]::WindowWidth=70
+[console]::WindowWidth=100
 [console]::WindowHeight=30
+[console]::BufferWidth = [console]::WindowWidth
 
 # Checks if script is ran as admin #
 
@@ -87,9 +88,14 @@ Write-Host "Applying Custom Performance settings..."
 $userProfiles = Get-ChildItem -Path "Registry::HKEY_USERS"
 foreach ($profile in $userProfiles) {
     $profileSID = $profile.PSChildName
+    Write-Host "Enabling Custom Performance Settings for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
+    Write-Host "Customizing Prefrence Mask Settings for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f | Out-Null
+    Write-Host "Disabling Windows Metrics for HKEY_USERS\$profileSID"
     reg add "HKEY_USERS\$profileSID\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f | Out-Null
+    Write-Host "Disabling Transparency Effects for HKEY_USERS\$profileSID"
+    reg add "HKEY_USERS\$profileSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f | Out-Null
 }
 
 foreach ($Option in $VisualEffectsArray) {
