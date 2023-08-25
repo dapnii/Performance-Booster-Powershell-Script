@@ -16,6 +16,8 @@ Script performs listed below actions:
 - Adjusts System Visual Settings For Best Performance
 
 
+**HOW TO RUN**
+
 In order to run all you have to do is right click and choose Run with Powershell (REQUIRES ELEVATED ACCESS).
 
 In case you get prompted about Execution Policy Change, type 'Y' and press enter.
