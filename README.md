@@ -1,6 +1,6 @@
 # Performance-Booster-Powershell-Script
 
-**Script is meant to optimize performance on Windows machines.**
+**Script is meant to optimize performance on machines with Windows 10.**
 
 Script performs listed below actions:
 
