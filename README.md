@@ -29,7 +29,8 @@ In case you get prompted about Execution Policy Change, type 'Y' and press enter
 
 **BENCHMARK TEST**
 
-![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/a7cede26-2158-41b1-9a4e-e09ec9e8aa63)
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/e14a1707-7dd3-4480-9e23-26974e1f0c1a)
+
 
 
 
