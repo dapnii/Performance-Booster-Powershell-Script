@@ -2,7 +2,12 @@
 
 Script is meant to optimize performance on Windows machines.
 
-In order to run all one has to do is right click and choose Run with Powershell (REQUIRES ELEVATED ACCESS).
+In order to run all you have to do is right click and choose Run with Powershell (REQUIRES ELEVATED ACCESS).
+
+In case you get prompted about Execution Policy Change, type 'Y' and press enter.
+
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/83143b2e-6659-474d-b26e-fdb912a5584b)
+
 
 Script does things like:
 
