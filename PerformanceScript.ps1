@@ -39,7 +39,6 @@ if (-Not ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c
 
 # Check if background apps are disabled and disables them if not true #
 Write-Host "Disabling background apps..."
-
 $baseKeyPath = "HKU:\"
 $subKeys = Get-ChildItem -Path $baseKeyPath
 foreach ($subKey in $subKeys) {
