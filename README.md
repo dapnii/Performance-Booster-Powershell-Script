@@ -1,6 +1,6 @@
 # Performance-Booster-Powershell-Script
 
-Script is meant to optimize performance on Windows machines.
+**Script is meant to optimize performance on Windows machines.**
 
 Script performs listed below actions:
 
@@ -27,7 +27,7 @@ In case you get prompted about Execution Policy Change, type 'Y' and press enter
 
 
 
-BENCHMARK TEST
+**BENCHMARK TEST**
 
 ![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/a7cede26-2158-41b1-9a4e-e09ec9e8aa63)
 
