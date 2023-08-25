@@ -20,6 +20,9 @@ Script performs listed below actions:
 
 In order to run all you have to do is right click and choose Run with Powershell (REQUIRES ELEVATED ACCESS).
 
+![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/1f21981e-ab81-4ee6-8b4e-e92e6bac27a0)
+
+
 In case you get prompted about Execution Policy Change, type 'Y' and press enter.
 
 ![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/83143b2e-6659-474d-b26e-fdb912a5584b)
