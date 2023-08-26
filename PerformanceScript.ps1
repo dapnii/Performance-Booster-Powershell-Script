@@ -22,8 +22,10 @@ if (-Not (Test-Path 'HKU:')) {
 # Clears temporary files in %temp%, temp, prefetch folders #
 $TempPaths = "C:\Users\*\AppData\Local\Temp", "C:\Windows\Temp", "C:\Windows\Prefetch"
 foreach ($Path in $TempPaths) {
-    Get-ChildItem -Path $Path *.* -Recurse | Remove-Item -Force -Recurse
-    Write-Host "Deleting Files From $Path..."
+    if (Test-Path $Path) {
+        Get-ChildItem -Path $Path *.* -Recurse | Remove-Item -Force -Recurse
+        Write-Host "Deleting Files From $Path..."
+    }
 }
 
 # Checks if high performance mode is enabled and if not enables it #
@@ -41,8 +43,7 @@ foreach ($Version in $FirefoxVersions) {
         Write-Host "Clearing Firefox Cache..."
         break
     } else {
-        Write-Host "Firefox Cache Folder Could Not Be Find..."
-        break
+        Write-Host "Firefox Cache Folder ($Version) Could Not Be Find..."
     }
 }
 
@@ -60,6 +61,14 @@ $ServicesArray = "DiagTrack", "CscService"
 foreach ($Service in $ServicesArray) {
     Write-Host "Disabling $Service Service..."
     Set-Service -Name $Service -StartupType Disabled; Stop-Service -Name $Service
+}
+
+
+# All modifications in HKLM #
+if (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System") {
+    Write-Host "Disabling Storing And Uploading User Activities To Microsoft..."
+    reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f | Out-Null
+    reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f | Out-Null
 }
 
 # Loop designed to loop through each user in HKEY_USERS and do specified things below #
@@ -118,9 +127,5 @@ foreach ($profile in $userProfiles) {
 
 Restart-Service -Name Themes
 
-# All modifications in HKLM #
-Write-Host "Disabling Storing And Uploading User Activities To Microsoft... "
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f | Out-Null
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f | Out-Null
 
 Read-Host -Prompt "PRESS ENTER TO EXIT..."
