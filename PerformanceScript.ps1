@@ -82,37 +82,30 @@ foreach ($profile in $userProfiles) {
         Write-Host "Enabling Custom Performance Settings for HKEY_USERS\$profileSID"
         reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
     }
-
     if (Test-Path "HKU:\$profile\Control Panel\Desktop") {
         Write-Host "Customizing Prefrence Mask Settings for HKEY_USERS\$profileSID"
         reg add "HKEY_USERS\$profileSID\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f | Out-Null
     }
-
     if (Test-Path "HKU:\$profile\Control Panel\Desktop\WindowMetrics") {
         Write-Host "Disabling Windows Metrics for HKEY_USERS\$profileSID"
         reg add "HKEY_USERS\$profileSID\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f | Out-Null
     }
-
     if (Test-Path "HKU:\$profile\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize") {
         Write-Host "Disabling Transparency Effects for HKEY_USERS\$profileSID"
         reg add "HKEY_USERS\$profileSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f | Out-Null
     }
-
     if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager") {
         Write-Host "Disabling Automatically Installing Suggested Apps for HKEY_USERS\$profileSID..."
         reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f | Out-Null
     }
-
     if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager") {
         Write-Host "Disabling Start Menu Suggestions for HKEY_USERS\$profileSID..."
         reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f | Out-Null
     }
-
     if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications") {
         Write-Host "Disabling Taskbar News And Interests for HKEY_USERS\$profileSID..."
         reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Feeds" /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f | Out-Null
     }
-
     if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications") {
         Write-Host "Disabling background apps..."
         reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f | Out-Null
