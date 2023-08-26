@@ -37,18 +37,6 @@ if (-Not ($GetPowerPlan -eq "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c
 }
 
 
-# Check if background apps are disabled and disables them if not true #
-Write-Host "Disabling background apps..."
-$baseKeyPath = "HKU:\"
-$subKeys = Get-ChildItem -Path $baseKeyPath
-foreach ($subKey in $subKeys) {
-    $registryPath = Join-Path -Path $subKey.PSPath -ChildPath "Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications"
-    if (Test-Path -Path $registryPath) {
-        Set-ItemProperty -Path $registryPath -Name "GlobalUserDisabled" -Value 1
-    }
-}
-
-
 # Checks what version of firefox user has and clear proper cache folder #
 $FirefoxVersions = @("*.default-esr", "*.default-release")
 foreach ($Version in $FirefoxVersions) {
@@ -108,6 +96,9 @@ foreach ($profile in $userProfiles) {
 
     Write-Host "Disabling Taskbar News And Interests for HKEY_USERS\$profileSID..."
     reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Feeds" /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f | Out-Null
+
+    Write-Host "Disabling background apps..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f | Out-Null
 
 # System Properties --> Advanced --> Performance Settings --> Custom Settings for best performance and look #
     foreach ($Option in $VisualEffectsArray) {
