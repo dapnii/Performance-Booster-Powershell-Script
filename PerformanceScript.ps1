@@ -1,3 +1,6 @@
+# Errors are not outputed #
+$ErrorActionPreference = 'silentlycontinue'
+
 # Window Size #
 [console]::WindowWidth=85
 [console]::WindowHeight=30
@@ -9,9 +12,6 @@ if (-not $isAdmin) {
     Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
     Exit
 }
-
-# Errors are not outputed #
-$ErrorActionPreference = 'silentlycontinue'
 
 # Saves HKEY_USERS under HKU:
 if (-Not (Test-Path 'HKU:')) {
