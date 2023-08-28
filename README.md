@@ -18,6 +18,8 @@ Script performs listed below actions:
 
 **HOW TO RUN**
 
+**!!!Close all applications before running - especially Firefox and Chrome!!!**
+
 In order to run all you have to do is right click and choose Run with Powershell (REQUIRES ELEVATED ACCESS).
 
 ![image](https://github.com/dapnii/Performance-Booster-Powershell-Script/assets/116521500/915746e0-1ac9-4a31-9d17-ab727547370d)
