@@ -65,11 +65,10 @@ foreach ($Service in $ServicesArray) {
 
 
 # All modifications in HKLM #
-if (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System") {
-    Write-Host "Disabling Storing And Uploading User Activities To Microsoft..."
-    reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f | Out-Null
-    reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f | Out-Null
-}
+Write-Host "Disabling Storing And Uploading User Activities To Microsoft..."
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f | Out-Null
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f | Out-Null
+
 
 # Loop designed to loop through each user in HKEY_USERS and do specified things below #
 $VisualEffectsArray = "AnimateMinMax", "ComboBoxAnimation", "ControlAnimations", "CursorShadow", "ListBoxSmoothScrolling", "ListviewAlphaSelect", "ListviewShadow", "MenuAnimation", "TaskbarAnimations", "DWMAeroPeekEnabled", "DWMEnabled", "DWMSaveThumbnailEnabled", "Themes", "TooltipAnimation"
@@ -78,38 +77,30 @@ $userProfiles = Get-ChildItem -Path "Registry::HKEY_USERS"
 foreach ($profile in $userProfiles) {
     $profileSID = $profile.PSChildName
 
-    if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects") {
-        Write-Host "Enabling Custom Performance Settings for HKEY_USERS\$profileSID"
-        reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
-    }
-    if (Test-Path "HKU:\$profile\Control Panel\Desktop") {
-        Write-Host "Customizing Prefrence Mask Settings for HKEY_USERS\$profileSID"
-        reg add "HKEY_USERS\$profileSID\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f | Out-Null
-    }
-    if (Test-Path "HKU:\$profile\Control Panel\Desktop\WindowMetrics") {
-        Write-Host "Disabling Windows Metrics for HKEY_USERS\$profileSID"
-        reg add "HKEY_USERS\$profileSID\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f | Out-Null
-    }
-    if (Test-Path "HKU:\$profile\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize") {
-        Write-Host "Disabling Transparency Effects for HKEY_USERS\$profileSID"
-        reg add "HKEY_USERS\$profileSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f | Out-Null
-    }
-    if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager") {
-        Write-Host "Disabling Automatically Installing Suggested Apps for HKEY_USERS\$profileSID..."
-        reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f | Out-Null
-    }
-    if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager") {
-        Write-Host "Disabling Start Menu Suggestions for HKEY_USERS\$profileSID..."
-        reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f | Out-Null
-    }
-    if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications") {
-        Write-Host "Disabling Taskbar News And Interests for HKEY_USERS\$profileSID..."
-        reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Feeds" /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f | Out-Null
-    }
-    if (Test-Path "HKU:\$profile\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications") {
-        Write-Host "Disabling background apps..."
-        reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f | Out-Null
-    }
+    Write-Host "Enabling Custom Performance Settings for HKEY_USERS\$profileSID"
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 3 /f | Out-Null
+    
+    Write-Host "Customizing Prefrence Mask Settings for HKEY_USERS\$profileSID"
+    reg add "HKEY_USERS\$profileSID\Control Panel\Desktop" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f | Out-Null
+    
+    Write-Host "Disabling Windows Metrics for HKEY_USERS\$profileSID"
+    reg add "HKEY_USERS\$profileSID\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f | Out-Null
+
+    Write-Host "Disabling Transparency Effects for HKEY_USERS\$profileSID"
+    reg add "HKEY_USERS\$profileSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f | Out-Null
+    
+    Write-Host "Disabling Automatically Installing Suggested Apps for HKEY_USERS\$profileSID..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f | Out-Null
+
+    Write-Host "Disabling Start Menu Suggestions for HKEY_USERS\$profileSID..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f | Out-Null
+
+    Write-Host "Disabling Taskbar News And Interests for HKEY_USERS\$profileSID..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\Feeds" /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f | Out-Null
+    
+    Write-Host "Disabling background apps..."
+    reg add "HKEY_USERS\$profileSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f | Out-Null
+    
 
 # System Properties --> Advanced --> Performance Settings --> Custom Settings for best performance and look #
     foreach ($Option in $VisualEffectsArray) {
